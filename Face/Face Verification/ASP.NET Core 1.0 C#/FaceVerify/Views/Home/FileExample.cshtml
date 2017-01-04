@@ -1,0 +1,11 @@
+﻿<form asp-action="FileExample" asp-controller="Home" enctype="multipart/form-data">
+    <div class="form-horizontal">
+            <label for="files">Select two files containing single faces</label>
+            <input type="file" name="files" id="files" multiple >
+            <input type="submit" value="Upload" />
+    </div>
+</form>
+
+<hr />
+
+@ViewData["Result"]
