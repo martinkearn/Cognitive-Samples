@@ -1,0 +1,35 @@
+﻿<p>The result of analysis for this image:</p>
+<img src="https://oxfordportal.blob.core.windows.net/emotion/recognition1-thumbnail.jpg" class="img-thumbnail" />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="UrlExample" enctype="multipart/form-data">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="width">Width</label>
+                    <input type="text" name="width" id="width" class="form-control">
+                    <p class="help-block">How wide you want your thumbnail (in px)</p>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height</label>
+                    <input type="text" name="height" id="height" class="form-control">
+                    <p class="help-block">How high you want your thumbnail (in px)</p>
+                </div>
+                <div class="form-group">
+                    <label for="smartcropping">Smart Crop</label>
+                    <input type="checkbox" name="smartcropping" id="smartcropping" class="" checked>
+                    <p class="help-block">Crop based on the region of interest within the source image</p>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Upload" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Thumbnail Image</h4>
+        <img src="@ViewData["thumbnailImage"]" />
+    </div>
+</div>

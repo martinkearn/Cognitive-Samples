@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Two examples</h2>
+        <p>This example shows use of the <a href="https://www.projectoxford.ai/emotion">Project Oxford Emotion API</a> which will analyse the emotions shown on a facial photograph and return a json result set giving each emotion a score.</p>
+        <p>The API takes input from a request body in either json or octet stream formats. In json format, you pass some json which contains the url of a file to be analysed. In octet-stream format, you pass the file itself in the body of the request. This example shows both techniques</p>
+        <p>You can find the corresponding actions in the Home controller</p>
+        <ul>
+            <li><a href="/home/URLExample">JSON / URL example</a>. This passes a url for an image on the Project Oxford home page</li>
+            <li><a href="/home/FileExample">OCTET-STREAM / File example</a>. This allows the user to upload a file to be analysed.</li>
+        </ul>
+    </div>
+</div>

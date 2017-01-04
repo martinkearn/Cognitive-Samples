@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "path": "originals/{name}",
+      "connection": "thumbnailgenstorage_STORAGE",
+      "name": "original",
+      "type": "blobTrigger",
+      "direction": "in"
+    },
+    {
+      "path": "thumbs/{name}",
+      "connection": "thumbnailgenstorage_STORAGE",
+      "name": "thumb",
+      "type": "blob",
+      "direction": "out"
+    }
+  ],
+  "disabled": false
+}

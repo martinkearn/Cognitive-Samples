@@ -1,0 +1,18 @@
+<html>
+
+<body>
+    <script type="text/javascript">
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(xhr.responseText);
+            }
+        }
+        xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/analyze?Categories,Tags,Description,Faces,ImageType,Color,Adult');
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
+        xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<html>
+
+<body>
+    <div id="response"></div>
+    <script type="text/javascript">
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            var response = document.querySelector('#response');
+            var img = new Image();
+            var url = window.URL || window.webkitURL;
+            img.src = url.createObjectURL(this.response);
+            response.appendChild(img);
+            }
+        }
+        xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=250&height=250&smartCropping=true');
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
+        xhr.responseType = 'blob';
+        xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
+    </script>
+</body>
+
+</html>

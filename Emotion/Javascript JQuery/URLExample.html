@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <p>This example shows how to post a image to the Project Oxford Emotion API by passing a url to an image</p>
+    <button id="btn">Click here</button>
+    <p id="response"></p>
+    
+    <script type="text/javascript">
+        //apiKey: Replace this with your own Project Oxford Emotion API key, please do not use my key. I inlcude it here so you can get up and running quickly but you can get your own key for free at https://www.projectoxford.ai/emotion 
+        var apiKey = "1dd1f4e23a5743139399788aa30a7153";
+        
+        //apiUrl: The base URL for the API. Find out what this is for other APIs via the API documentation
+        var apiUrl = "https://api.projectoxford.ai/emotion/v1.0/recognize";
+    
+        $('#btn').click(function () {
+            CallAPI("https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg", apiUrl, apiKey);
+        });
+        
+        function CallAPI(fileUrl, apiUrl, apiKey)
+        {
+            $.ajax({
+                url: apiUrl,
+                beforeSend: function (xhrObj) {
+                    xhrObj.setRequestHeader("Content-Type", "application/json");
+                    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
+                },
+                type: "POST",
+                data: '{"url": "' +fileUrl +'"}'
+            })
+                .done(function (response) {
+                    ProcessResult(response);
+                })
+                .fail(function (error) {
+                    $("#response").text(error.getAllResponseHeaders());
+                });
+        }
+        
+        function ProcessResult(response)
+        {
+            var data = JSON.stringify(response);
+            $("#response").text(data);
+        }
+    </script>
+</body>
+
+</html>
