@@ -15,6 +15,7 @@ namespace FaceVerify.Controllers
     public class HomeController : Controller
     {
         public const string _detectApiUrl = "https://api.projectoxford.ai/face/v1.0/detect?";
+        public const string _verifyApiUrl = "https://api.projectoxford.ai/face/v1.0/verify ";
         public const string _faceApiKey = "077bcd15b2004f3a99e4f947e28d09e7";
 
         public IActionResult Index()
@@ -61,9 +62,33 @@ namespace FaceVerify.Controllers
                     var faces = JsonConvert.DeserializeObject<List<Face>>(responseArray.ToString());
                     faceIds.Add(faces.FirstOrDefault().faceId);
                 }
-
-
             }
+
+            //verify the two face IDs using Face-Verify: https://dev.projectoxford.ai/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a
+            using (var verifyHttpClient = new HttpClient())
+            {
+                //setup HttpClient
+                verifyHttpClient.BaseAddress = new Uri(_verifyApiUrl);
+                verifyHttpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _faceApiKey);
+
+                //setup data object
+                var dataObject = new VerifyRequestData()
+                {
+                    faceId1 = faceIds[0],
+                    faceId2 = faceIds[1],
+                };
+
+                //setup httpContent object
+                var dataJson = JsonConvert.SerializeObject(dataObject);
+                HttpContent content = new StringContent(dataJson);
+                content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+
+                //make request
+                var response = await verifyHttpClient.PostAsync(_verifyApiUrl, content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                ViewData["Result"] = responseContent;
+            }
+
 
 
             return View();
