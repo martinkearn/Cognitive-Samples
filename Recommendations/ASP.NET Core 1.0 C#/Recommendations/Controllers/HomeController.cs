@@ -24,10 +24,10 @@ namespace Recommendations.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly List<Book> _books;
 
-        public HomeController(IHostingEnvironment env)
+        public HomeController(IHostingEnvironment environment)
         {
-            _environment = env;
-            _books = new BooksService(_environment).GetBooks();
+            _environment = environment;
+            _books = new BooksService(environment).GetBooks();
         }
 
         public IActionResult Index()

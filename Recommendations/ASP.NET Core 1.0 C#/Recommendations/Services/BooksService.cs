@@ -13,9 +13,9 @@ namespace Recommendations.Services
     {
         private readonly IHostingEnvironment _environment;
 
-        public BooksService(IHostingEnvironment env)
+        public BooksService(IHostingEnvironment environment)
         {
-            _environment = env;
+            _environment = environment;
         }
 
         public List<Book> GetBooks()
