@@ -1,7 +1,12 @@
-﻿@model Recommendations.Models.Book
+﻿@model Recommendations.ViewModels.HomeBookViewModel
 
 <div class="jumbotron">
-    <h1>@Model.Title</h1>
-    <p>By <strong>@Model.Author</strong>. Published with <strong>@Model.Publisher</strong> in <strong>@Model.Year</strong></p>
-    <p>ID: <strong>@Model.Id</strong></p>
+    <h1>@Model.Book.Title</h1>
+    <p>By <strong>@Model.Book.Author</strong>. Published with <strong>@Model.Book.Publisher</strong> in <strong>@Model.Book.Year</strong></p>
+    <p>ID: <strong>@Model.Book.Id</strong></p>
 </div>
+
+@foreach (var recommendation in Model.Recomendations)
+{
+    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendation.Book.Id"><strong>@recommendation.Book.Title</strong></a> with a rating of '@recommendation.Rating' because @recommendation.Reasoning</p>
+}
