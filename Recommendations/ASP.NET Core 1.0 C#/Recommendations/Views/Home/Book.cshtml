@@ -1,3 +1,7 @@
 ﻿@model Recommendations.Models.Book
 
-<h1>@Model.Id</h1>
+<div class="jumbotron">
+    <h1>@Model.Title</h1>
+    <p>By <strong>@Model.Author</strong>. Published with <strong>@Model.Publisher</strong> in <strong>@Model.Year</strong></p>
+    <p>ID: <strong>@Model.Id</strong></p>
+</div>
