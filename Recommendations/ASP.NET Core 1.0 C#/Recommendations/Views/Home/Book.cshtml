@@ -6,7 +6,8 @@
     <p>ID: <strong>@Model.Book.Id</strong></p>
 </div>
 
-@foreach (var recommendation in Model.Recomendations)
+<h2>Recomendations</h2>
+@foreach (var recommendedItem in Model.RecommendedItems.recommendedItems)
 {
-    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendation.Book.Id"><strong>@recommendation.Book.Title</strong></a> with a rating of '@recommendation.Rating' because @recommendation.Reasoning</p>
+    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
 }

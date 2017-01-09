@@ -9,6 +9,6 @@ namespace Recommendations.ViewModels
     public class HomeBookViewModel
     {
         public Book Book { get; set; }
-        public List<RecommendedBook> Recomendations { get; set; }
+        public RecommendedItems RecommendedItems { get; set; }
     }
 }

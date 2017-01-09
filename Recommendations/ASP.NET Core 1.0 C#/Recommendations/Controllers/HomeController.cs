@@ -15,6 +15,7 @@ using Recommendations.Services;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Recommendations.Controllers
 {
@@ -37,54 +38,42 @@ namespace Recommendations.Controllers
 
         public async Task<IActionResult> Book(string id)
         {
+            //get this book
             var book = _books.Where(o => o.Id == id).FirstOrDefault();
 
             var _apiKey = "48905f53e07a46138cc413cd04efb325";
 
-            //better way: http://stackoverflow.com/questions/29992848/parse-and-modify-a-query-string-in-net-core
-            var _apiBaseUri = "https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/";
-            var _apiFullUri = _apiBaseUri
-                + "61b5f30d-de8a-4a9c-b026-058081095ef9"
-                + "/recommend/item?"
-                + "itemIds=" + id + "&"
-                + "numberOfResults=" +"10" +"&"
-                + "minimalScore=0.5&"
-                + "includeMetadata=1&"
-                + "buildId=" + "1600480";
-            //Model ID: 61b5f30d-de8a-4a9c-b026-058081095ef9 
-            //Recommendations build id: 1600480
-            //FBT build id: 1600485 
-            //Rank build id: 1600486 
-
-            var recomendations = new List<RecommendedBook>();
+            //construct API Uri
+            var parameters = new Dictionary<string, string> {
+                { "itemIds", id},
+                { "numberOfResults", "5" },
+                { "minimalScore", "0" },
+                { "includeMetadata", "1" },
+                { "buildId", "1600480" },
+            };
+            var baseApiUrl = "https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/61b5f30d-de8a-4a9c-b026-058081095ef9/recommend/item";
+            var apiUri = QueryHelpers.AddQueryString(baseApiUrl, parameters);
+            
+            //get recomendations
+            var recomendedItems = new RecommendedItems();
             using (var httpClient = new HttpClient())
             {
                 //setup HttpClient
-                httpClient.BaseAddress = new Uri(_apiBaseUri);
-                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "48905f53e07a46138cc413cd04efb325");
+                httpClient.BaseAddress = new Uri(baseApiUrl);
+                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiKey);
 
                 //make request
-                var response = await httpClient.GetAsync(_apiFullUri);
+                var response = await httpClient.GetAsync(apiUri);
 
                 //read response and parse to object
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
-                foreach (var recomendedItem in recomendedItems.recommendedItems)
-                {
-                    var recomendedBook = _books.Where(o => o.Id == recomendedItem.items.FirstOrDefault().id).FirstOrDefault();
-                    recomendations.Add(new RecommendedBook()
-                    {
-                        Book = recomendedBook,
-                        Rating = Math.Round(recomendedItem.rating, 2),
-                        Reasoning = recomendedItem.reasoning.FirstOrDefault()
-                    });
-                }
+                recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             }
 
             var vm = new HomeBookViewModel()
             {
                 Book = book,
-                Recomendations = recomendations
+                RecommendedItems = recomendedItems
             };
 
             return View(vm);
