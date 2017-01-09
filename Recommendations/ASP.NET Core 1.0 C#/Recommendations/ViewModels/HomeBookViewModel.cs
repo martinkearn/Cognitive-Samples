@@ -10,5 +10,6 @@ namespace Recommendations.ViewModels
     {
         public Book Book { get; set; }
         public RecommendedItems RecommendedItems { get; set; }
+        public RecommendedItems FBTItems { get; set; }
     }
 }

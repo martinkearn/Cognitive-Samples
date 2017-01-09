@@ -41,41 +41,21 @@ namespace Recommendations.Controllers
             //get this book
             var book = _books.Where(o => o.Id == id).FirstOrDefault();
 
-            var _apiKey = "48905f53e07a46138cc413cd04efb325";
+            //get recommended items
+            var recomendedItems = await RecomendationsApiService.GetRecommendedItems(id, "5", "0");
 
-            //construct API Uri
-            var parameters = new Dictionary<string, string> {
-                { "itemIds", id},
-                { "numberOfResults", "5" },
-                { "minimalScore", "0" },
-                { "includeMetadata", "1" },
-                { "buildId", "1600480" },
-            };
-            var baseApiUrl = "https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/61b5f30d-de8a-4a9c-b026-058081095ef9/recommend/item";
-            var apiUri = QueryHelpers.AddQueryString(baseApiUrl, parameters);
-            
-            //get recomendations
-            var recomendedItems = new RecommendedItems();
-            using (var httpClient = new HttpClient())
-            {
-                //setup HttpClient
-                httpClient.BaseAddress = new Uri(baseApiUrl);
-                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiKey);
+            //get fbt items
+            var fbtItems = await RecomendationsApiService.GetFBTItems(id, "5", "0");
 
-                //make request
-                var response = await httpClient.GetAsync(apiUri);
-
-                //read response and parse to object
-                var responseContent = await response.Content.ReadAsStringAsync();
-                recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
-            }
-
+            //construct view model
             var vm = new HomeBookViewModel()
             {
                 Book = book,
-                RecommendedItems = recomendedItems
+                RecommendedItems = recomendedItems,
+                FBTItems = fbtItems
             };
 
+            //return view
             return View(vm);
         }
 

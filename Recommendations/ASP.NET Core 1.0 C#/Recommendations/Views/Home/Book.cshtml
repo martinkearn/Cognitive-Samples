@@ -11,3 +11,9 @@
 {
     <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
 }
+
+<h2>Frequently Bought Together</h2>
+@foreach (var recommendedItem in Model.FBTItems.recommendedItems)
+{
+    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
+}
