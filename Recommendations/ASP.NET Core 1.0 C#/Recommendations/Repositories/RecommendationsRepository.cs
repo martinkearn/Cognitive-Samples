@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Recommendations.Interfaces;
 using Recommendations.Models;
@@ -8,31 +9,30 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Recommendations.Services
+namespace Recommendations.Repositories
 {
     public class RecommendationsRepository : IRecommendationsRepository
     {
-        private string _apiKey = "48905f53e07a46138cc413cd04efb325";
-        private string _modeldId = "61b5f30d-de8a-4a9c-b026-058081095ef9";
-        private string _recommendationBuildId = "1600480";
-        private string _fbtBuildId = "1600485";
+        private readonly AppSettings _appSettings;
         private string _baseItemToItemApiUrl;
 
-        public RecommendationsRepository()
+        public RecommendationsRepository(IOptions<AppSettings> appSettings)
         {
-            _baseItemToItemApiUrl = string.Format("https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/{0}/recommend/item", _modeldId);
+            _appSettings = appSettings.Value;
+
+            _baseItemToItemApiUrl = _appSettings.RecommendationsApiBaseUrl.Replace("MODELID", _appSettings.RecommendationsApiModelId);
         }
 
         public async Task<RecommendedItems> GetRecommendedItems(string id, string numberOfResults, string minimalScore)
         {
-            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _recommendationBuildId);
+            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _appSettings.RecommendationsApiRecommendationsBuildId);
             var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             return recomendedItems;
         }
 
         public async Task<RecommendedItems> GetFBTItems(string id, string numberOfResults, string minimalScore)
         {
-            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _fbtBuildId);
+            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _appSettings.RecommendationsApiFBTBuildId);
             var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             return recomendedItems;
         }
@@ -55,7 +55,7 @@ namespace Recommendations.Services
             {
                 //setup HttpClient
                 httpClient.BaseAddress = new Uri(_baseItemToItemApiUrl);
-                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _apiKey);
+                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.RecommendationsApiKey);
 
                 //make request
                 var response = await httpClient.GetAsync(apiUri);

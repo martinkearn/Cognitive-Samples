@@ -11,7 +11,7 @@ using System.Text;
 using Recommendations.Models;
 using Recommendations.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Recommendations.Services;
+using Recommendations.Repositories;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;

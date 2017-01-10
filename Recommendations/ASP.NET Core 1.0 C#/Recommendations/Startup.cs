@@ -8,7 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Recommendations.Interfaces;
-using Recommendations.Services;
+using Recommendations.Models;
+using Recommendations.Repositories;
 
 namespace Recommendations
 {
@@ -31,6 +32,10 @@ namespace Recommendations
         {
             // Add framework services.
             services.AddMvc();
+
+            //add app settings
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
 
             // Add repositories
             services.AddSingleton<IBooksRepository, BooksRepository>();
