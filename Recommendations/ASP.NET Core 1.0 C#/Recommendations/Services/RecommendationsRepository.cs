@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using Recommendations.Interfaces;
 using Recommendations.Models;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,34 @@ using System.Threading.Tasks;
 
 namespace Recommendations.Services
 {
-    public static class RecomendationsApiService
+    public class RecommendationsRepository : IRecommendationsRepository
     {
-        private static string _apiKey = "48905f53e07a46138cc413cd04efb325";
-        private static string _modeldId = "61b5f30d-de8a-4a9c-b026-058081095ef9";
-        private static string _recommendationBuildId = "1600480";
-        private static string _fbtBuildId = "1600485";
-        private static string _baseItemToItemApiUrl = string.Format("https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/{0}/recommend/item", _modeldId);
+        private string _apiKey = "48905f53e07a46138cc413cd04efb325";
+        private string _modeldId = "61b5f30d-de8a-4a9c-b026-058081095ef9";
+        private string _recommendationBuildId = "1600480";
+        private string _fbtBuildId = "1600485";
+        private string _baseItemToItemApiUrl;
 
-        public static async Task<RecommendedItems> GetRecommendedItems(string id, string numberOfResults, string minimalScore)
+        public RecommendationsRepository()
+        {
+            _baseItemToItemApiUrl = string.Format("https://westus.api.cognitive.microsoft.com/recommendations/v4.0/models/{0}/recommend/item", _modeldId);
+        }
+
+        public async Task<RecommendedItems> GetRecommendedItems(string id, string numberOfResults, string minimalScore)
         {
             var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _recommendationBuildId);
             var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             return recomendedItems;
         }
 
-        public static async Task<RecommendedItems> GetFBTItems(string id, string numberOfResults, string minimalScore)
+        public async Task<RecommendedItems> GetFBTItems(string id, string numberOfResults, string minimalScore)
         {
             var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _fbtBuildId);
             var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             return recomendedItems;
         }
-        
-        private static async Task<string> CallRecomendationsApi(string id, string numberOfResults, string minimalScore, string buildId)
+
+        private async Task<string> CallRecomendationsApi(string id, string numberOfResults, string minimalScore, string buildId)
         {
             //construct API Uri
             var parameters = new Dictionary<string, string> {

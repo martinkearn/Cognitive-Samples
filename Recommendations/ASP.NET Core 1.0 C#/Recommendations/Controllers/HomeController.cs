@@ -16,36 +16,37 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.WebUtilities;
+using Recommendations.Interfaces;
 
 namespace Recommendations.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _environment;
-        private readonly List<Book> _books;
+        private readonly IBooksRepository _books;
+        private readonly IRecommendationsRepository _recommendations;
 
-        public HomeController(IHostingEnvironment environment)
+        public HomeController(IHostingEnvironment environment, IBooksRepository booksRepository, IRecommendationsRepository recommendationsRepository)
         {
             _environment = environment;
-            _books = new BooksService(environment).GetBooks();
+            _books = booksRepository;
+            _recommendations = recommendationsRepository;
         }
 
         public IActionResult Index()
         {
-            //render view
-            return View(_books);
+            var allBooks = _books.List();
+            return View(allBooks);
         }
 
         public async Task<IActionResult> Book(string id)
         {
             //get this book
-            var book = _books.Where(o => o.Id == id).FirstOrDefault();
+            var book = _books.List().Where(o => o.Id == id).FirstOrDefault();
 
-            //get recommended items
-            var recomendedItems = await RecomendationsApiService.GetRecommendedItems(id, "5", "0");
-
-            //get fbt items
-            var fbtItems = await RecomendationsApiService.GetFBTItems(id, "5", "0");
+            //get recommended and FBT items
+            var recomendedItems = await _recommendations.GetRecommendedItems(id, "5", "0");
+            var fbtItems = await _recommendations.GetFBTItems(id, "5", "0");
 
             //construct view model
             var vm = new HomeBookViewModel()

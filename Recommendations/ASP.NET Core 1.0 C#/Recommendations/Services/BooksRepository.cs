@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Recommendations.Interfaces;
 using Recommendations.Models;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Recommendations.Services
 {
-    public class BooksService
+    public class BooksRepository : IBooksRepository
     {
         private readonly IHostingEnvironment _environment;
 
-        public BooksService(IHostingEnvironment environment)
+        public BooksRepository(IHostingEnvironment environment)
         {
             _environment = environment;
         }
 
-        public List<Book> GetBooks()
+        public IEnumerable<Book> List()
         {
             var books = new List<Book>();
             var rootPath = _environment.ContentRootPath;
