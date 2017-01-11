@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Recommendations.Interfaces;
+using Recommendations.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.InternalAbstractions;
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Text;
-using Recommendations.Models;
-using Recommendations.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Recommendations.Repositories;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.WebUtilities;
-using Recommendations.Interfaces;
 
 namespace Recommendations.Controllers
 {
