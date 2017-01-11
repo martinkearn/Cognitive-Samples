@@ -35,14 +35,14 @@ namespace Recommendations.Controllers
 
         public IActionResult Index()
         {
-            var allBooks = _books.List();
+            var allBooks = _books.GetBooks();
             return View(allBooks);
         }
 
         public async Task<IActionResult> Book(string id)
         {
             //get this book
-            var book = _books.List().Where(o => o.Id == id).FirstOrDefault();
+            var book = _books.GetBooks().Where(o => o.Id == id).FirstOrDefault();
 
             //get recommended and FBT items
             var recomendedItems = await _recommendations.GetRecommendedItems(id, "5", "0");

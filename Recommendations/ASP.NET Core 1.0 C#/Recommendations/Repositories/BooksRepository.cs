@@ -12,17 +12,12 @@ namespace Recommendations.Repositories
 {
     public class BooksRepository : IBooksRepository
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IEnumerable<Book> _books;
 
         public BooksRepository(IHostingEnvironment environment)
         {
-            _environment = environment;
-        }
-
-        public IEnumerable<Book> List()
-        {
             var books = new List<Book>();
-            var rootPath = _environment.ContentRootPath;
+            var rootPath = environment.ContentRootPath;
             var storeFilePath = rootPath + "/bookscatalog.txt";
             using (var fileStream = new FileStream(storeFilePath, FileMode.Open))
             {
@@ -45,8 +40,12 @@ namespace Recommendations.Repositories
                     }
                 }
             }
+            _books = books.AsEnumerable();
+        }
 
-            return books;
+        public IEnumerable<Book> GetBooks()
+        {
+            return _books;
         }
     }
 }

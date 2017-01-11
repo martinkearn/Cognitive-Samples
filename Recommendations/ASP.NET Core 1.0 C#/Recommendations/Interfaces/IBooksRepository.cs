@@ -8,6 +8,6 @@ namespace Recommendations.Interfaces
 {
     public interface IBooksRepository
     {
-        IEnumerable<Book> List();
+        IEnumerable<Book> GetBooks();
     }
 }
