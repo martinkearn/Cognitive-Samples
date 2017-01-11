@@ -45,7 +45,7 @@ namespace Recommendations.Controllers
             var book = _books.GetBooks().Where(o => o.Id == id).FirstOrDefault();
 
             //get recommended and FBT items
-            var recomendedItems = await _recommendations.GetRecommendedItems(id, "5", "0");
+            var recomendedItems = await _recommendations.GetITIItems(id, "5", "0");
             var fbtItems = await _recommendations.GetFBTItems(id, "5", "0");
 
             //construct view model

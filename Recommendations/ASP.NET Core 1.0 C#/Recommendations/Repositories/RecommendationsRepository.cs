@@ -23,13 +23,27 @@ namespace Recommendations.Repositories
             _baseItemToItemApiUrl = _appSettings.RecommendationsApiBaseUrl.Replace("MODELID", _appSettings.RecommendationsApiModelId);
         }
 
-        public async Task<RecommendedItems> GetRecommendedItems(string id, string numberOfResults, string minimalScore)
+        /// <summary>
+        /// Helper function to call the Cognitive Recommendations API with an Item-to-Item build
+        /// </summary>
+        /// <param name="id">ItemId to seed recommendations on</param>
+        /// <param name="numberOfResults">How many results to return</param>
+        /// <param name="minimalScore">Minimal score for results to be included</param>
+        /// <returns>RecomendedItems object - a list of RecommendItems</returns>
+        public async Task<RecommendedItems> GetITIItems(string id, string numberOfResults, string minimalScore)
         {
-            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _appSettings.RecommendationsApiRecommendationsBuildId);
+            var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _appSettings.RecommendationsApiITIBuildId);
             var recomendedItems = JsonConvert.DeserializeObject<RecommendedItems>(responseContent);
             return recomendedItems;
         }
 
+        /// <summary>
+        /// Helper function to call the Cognitive Recommendations API with an Frequently-Bought-Together build
+        /// </summary>
+        /// <param name="id">ItemId to seed recommendations on</param>
+        /// <param name="numberOfResults">How many results to return</param>
+        /// <param name="minimalScore">Minimal score for results to be included</param>
+        /// <returns>RecomendedItems object - a list of RecommendItems</returns>
         public async Task<RecommendedItems> GetFBTItems(string id, string numberOfResults, string minimalScore)
         {
             var responseContent = await CallRecomendationsApi(id, numberOfResults, minimalScore, _appSettings.RecommendationsApiFBTBuildId);

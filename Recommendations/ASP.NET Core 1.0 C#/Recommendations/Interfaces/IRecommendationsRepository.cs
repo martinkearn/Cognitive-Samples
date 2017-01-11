@@ -8,7 +8,7 @@ namespace Recommendations.Interfaces
 {
     public interface IRecommendationsRepository
     {
-        Task<RecommendedItems> GetRecommendedItems(string id, string numberOfResults, string minimalScore);
+        Task<RecommendedItems> GetITIItems(string id, string numberOfResults, string minimalScore);
         Task<RecommendedItems> GetFBTItems(string id, string numberOfResults, string minimalScore);
     }
 }
