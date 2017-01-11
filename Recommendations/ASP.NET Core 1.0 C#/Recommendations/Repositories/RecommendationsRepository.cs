@@ -53,14 +53,20 @@ namespace Recommendations.Repositories
 
         private async Task<string> CallRecomendationsApi(string id, string numberOfResults, string minimalScore, string buildId)
         {
-            //construct API Uri
+            //construct API parameters
             var parameters = new Dictionary<string, string> {
                 { "itemIds", id},
                 { "numberOfResults", numberOfResults },
                 { "minimalScore", minimalScore },
-                { "includeMetadata", "1" },
-                { "buildId", buildId },
             };
+
+            //Only add build ID if it is not empty. buildId is an optional field and API defaults to active build if it is ommited
+            if (!String.IsNullOrEmpty(buildId))
+            {
+                parameters.Add("buildId", buildId);
+            }
+
+            //construct full API endpoint uri
             var apiUri = QueryHelpers.AddQueryString(_baseItemToItemApiUrl, parameters);
 
             //get item to item recommendations

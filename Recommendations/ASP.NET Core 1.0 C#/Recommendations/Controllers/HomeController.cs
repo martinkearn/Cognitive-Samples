@@ -22,13 +22,11 @@ namespace Recommendations.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHostingEnvironment _environment;
         private readonly IBooksRepository _books;
         private readonly IRecommendationsRepository _recommendations;
 
-        public HomeController(IHostingEnvironment environment, IBooksRepository booksRepository, IRecommendationsRepository recommendationsRepository)
+        public HomeController(IBooksRepository booksRepository, IRecommendationsRepository recommendationsRepository)
         {
-            _environment = environment;
             _books = booksRepository;
             _recommendations = recommendationsRepository;
         }
@@ -44,15 +42,15 @@ namespace Recommendations.Controllers
             //get this book
             var book = _books.GetBooks().Where(o => o.Id == id).FirstOrDefault();
 
-            //get recommended and FBT items
-            var recomendedItems = await _recommendations.GetITIItems(id, "5", "0");
+            //get ITI and FBT items
+            var itiItems = await _recommendations.GetITIItems(id, "5", "0");
             var fbtItems = await _recommendations.GetFBTItems(id, "5", "0");
 
             //construct view model
             var vm = new HomeBookViewModel()
             {
                 Book = book,
-                RecommendedItems = recomendedItems,
+                ITIItems = itiItems,
                 FBTItems = fbtItems
             };
 

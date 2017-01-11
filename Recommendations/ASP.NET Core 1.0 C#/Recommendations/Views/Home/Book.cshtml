@@ -1,13 +1,17 @@
 ﻿@model Recommendations.ViewModels.HomeBookViewModel
 
+@{
+    ViewData["Title"] = Model.Book.Title;
+}
+
 <div class="jumbotron">
-    <h1>@Model.Book.Title</h1>
+    <h1>@ViewData["Title"]</h1>
     <p>By <strong>@Model.Book.Author</strong>. Published with <strong>@Model.Book.Publisher</strong> in <strong>@Model.Book.Year</strong></p>
     <p>ID: <strong>@Model.Book.Id</strong></p>
 </div>
 
 <h2>Recomendations</h2>
-@foreach (var recommendedItem in Model.RecommendedItems.recommendedItems)
+@foreach (var recommendedItem in Model.ITIItems.recommendedItems)
 {
     <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
 }
