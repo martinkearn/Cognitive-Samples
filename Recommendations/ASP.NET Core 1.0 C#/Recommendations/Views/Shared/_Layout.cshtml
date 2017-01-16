@@ -17,6 +17,15 @@
     </environment>
 </head>
 <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            
+            <div class="navbar-header">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Book Recommendations</a>
+                <p class="navbar-text">Built by <a href="http://martink.me">Martin Kearn</a> using <a href="https://www.microsoft.com/cognitive-services/en-us/recommendations-api">Microsoft Cognitive Services Recommendation API</a>. Code is avaliable in <a href="https://github.com/martinkearn/Cognitive-Samples/tree/master/Recommendations/ASP.NET%20Core%201.0%20C%23">GitHub</a>.</p>
+            </div>
+        </div>
+    </div>
     <div class="container body-content">
         @RenderBody()
     </div>
