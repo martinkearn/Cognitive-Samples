@@ -25,6 +25,12 @@ namespace Recommendations.Repositories
                     while ((line = streamReader.ReadLine()) != null)
                     {
                         var cells = line.Split(',');
+
+                        var year = cells[5].Substring(cells[5].IndexOf('=') + 1);
+                        var yearLabel = (year == "0") ?
+                            "Year not know" :
+                            year;
+
                         var book = new Book()
                         {
                             Id = cells[0],
@@ -32,7 +38,7 @@ namespace Recommendations.Repositories
                             Type = cells[2],
                             Author = cells[3].Substring(cells[3].IndexOf('=') + 1),
                             Publisher = cells[4].Substring(cells[4].IndexOf('=') + 1),
-                            Year = cells[5].Substring(cells[5].IndexOf('=') + 1)
+                            Year = yearLabel
                         };
                         books.Add(book);
                     }

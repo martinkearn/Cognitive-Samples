@@ -8,16 +8,33 @@
     <h1>@ViewData["Title"]</h1>
     <p>By <strong>@Model.Book.Author</strong>. Published with <strong>@Model.Book.Publisher</strong> in <strong>@Model.Book.Year</strong></p>
     <p>ID: <strong>@Model.Book.Id</strong></p>
+    <a asp-action="index" class="btn btn-default"><< See all books</a>
 </div>
 
-<h2>Recomendations</h2>
-@foreach (var recommendedItem in Model.ITIItems.recommendedItems)
+
+
+<h2>Item-to-item Recomendations</h2>
+@if (Model.ITIItems.recommendedItems.Count() == 0)
 {
-    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
+    <p>There are no 'Item-to-item' recommendations for this book</p>
+}
+else
+{
+    @foreach (var recommendedItem in Model.ITIItems.recommendedItems)
+    {
+        <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
+    }
 }
 
 <h2>Frequently Bought Together</h2>
-@foreach (var recommendedItem in Model.FBTItems.recommendedItems)
+@if (Model.FBTItems.recommendedItems.Count() == 0)
 {
-    <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
+    <p>There are no 'Frequently Bought Together' recommendations for this book</p>
+}
+else
+{
+    @foreach (var recommendedItem in Model.FBTItems.recommendedItems)
+    {
+        <p><a asp-action="Book" asp-controller="Home" asp-route-id="@recommendedItem.items.FirstOrDefault().id"><strong>@recommendedItem.items.FirstOrDefault().name</strong></a> with a rating of '@Math.Round(recommendedItem.rating, 3)' because @recommendedItem.reasoning.FirstOrDefault()</p>
+    }
 }
