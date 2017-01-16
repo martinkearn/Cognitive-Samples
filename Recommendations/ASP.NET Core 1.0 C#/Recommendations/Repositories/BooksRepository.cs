@@ -16,7 +16,7 @@ namespace Recommendations.Repositories
         {
             var books = new List<Book>();
             var rootPath = environment.ContentRootPath;
-            var storeFilePath = rootPath + "/bookscatalog.txt";
+            var storeFilePath = rootPath + "/wwwroot/bookscatalog.txt";
             using (var fileStream = new FileStream(storeFilePath, FileMode.Open))
             {
                 using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
