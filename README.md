@@ -4,3 +4,5 @@ A collection of samples for working with Microsoft Cognitive Services in various
 Samples are generally organised as follows API > Function > Language.
 
 Samples are deliberatley kept as simple and clear as possible.
+
+The Recommendations sample has been moved to its own repo: https://github.com/martinkearn/Book-Recommendations
