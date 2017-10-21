@@ -5,4 +5,6 @@ Samples are generally organised as follows API > Function > Language.
 
 Samples are deliberatley kept as simple and clear as possible.
 
-The Recommendations 'sportswear' sample has been moved to its own repo: https://github.com/martinkearn/Recommendations
+The [Cortana Recommendations](https://gallery.cortanaintelligence.com/Tutorial/Recommendations-Solution) 'sportswear' sample has been moved to its own repo: https://github.com/martinkearn/Recommendations
+
+For [Text Analytics](https://azure.microsoft.com/en-gb/services/cognitive-services/text-analytics), see the 'sentimental' repo: https://github.com/martinkearn/SentimentalWeb
