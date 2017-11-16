@@ -1,0 +1,36 @@
+﻿@model PersonGroupSample.Models.PersonGroup
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PersonGroup</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.personGroupId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.personGroupId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.userData)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.userData)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.personGroupId }) |
+    <a asp-action="Index">Back to List</a>
+</div>

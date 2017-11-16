@@ -8,14 +8,16 @@ namespace PersonGroupSample.Interfaces
 {
     public interface IPersonGroupRep
     {
-        IEnumerable<PersonGroup> GetPersonGroups();
+        Task<IEnumerable<PersonGroup>> GetPersonGroups();
 
-        PersonGroup GetPersonGroup(string personGroupId);
+        Task<PersonGroup> GetPersonGroup(string personGroupId);
 
         Task<PersonGroup> CreatePersonGroup(PersonGroup personGroup);
 
-        PersonGroupTrainingStatus TrainPersonGroup(string personGroupId);
+        Task<PersonGroup> UpdatePersonGroup(PersonGroup personGroup);
 
-        string DeletePersonGroup(string personGroupId);
+        Task<PersonGroupTrainingStatus> TrainPersonGroup(string personGroupId);
+
+        Task<string> DeletePersonGroup(string personGroupId);
     }
 }

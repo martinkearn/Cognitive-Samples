@@ -11,34 +11,9 @@ namespace PersonGroupSample.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IPersonGroupRep _personGroupRep;
 
-        public HomeController(IPersonGroupRep personGroupRep)
+        public IActionResult Index()
         {
-            _personGroupRep = personGroupRep;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var name = (new Random((int)DateTime.Now.Ticks)).Next().ToString();
-            var personGroup = new PersonGroup() { name = name, personGroupId = name, userData = "No user data" };
-
-            var result = await _personGroupRep.CreatePersonGroup(personGroup);
-
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

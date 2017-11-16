@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PersonGroupSample.Interfaces;
 using PersonGroupSample.Models;
 using System;
@@ -21,14 +22,65 @@ namespace PersonGroupSample.Repositories
             _appSettings = appSettings.Value;
         }
 
-        public IEnumerable<PersonGroup> GetPersonGroups()
+        public async Task<IEnumerable<PersonGroup>> GetPersonGroups()
         {
-            return null;
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups";
+
+            //make request
+            var responseMessage = await httpClient.GetAsync(apiUri);
+
+            //return object if sucess or null if not
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                //cast to array of items
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                var responseArray = JArray.Parse(responseString);
+                var items = new List<PersonGroup>();
+                foreach (var response in responseArray)
+                {
+                    var item = JsonConvert.DeserializeObject<PersonGroup>(response.ToString());
+                    items.Add(item);
+                }
+
+                return items;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public PersonGroup GetPersonGroup(string personGroupId)
+        public async Task<PersonGroup> GetPersonGroup(string personGroupId)
         {
-            return null;
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}";
+
+            //make request
+            var responseMessage = await httpClient.GetAsync(apiUri);
+
+            //return object if sucess or null if not
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                //cast to item
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                var item = JsonConvert.DeserializeObject<PersonGroup>(responseString);
+                return item;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
@@ -56,14 +108,58 @@ namespace PersonGroupSample.Repositories
             return (responseMessage.IsSuccessStatusCode) ? personGroup : null;
         }
 
-        public PersonGroupTrainingStatus TrainPersonGroup(string personGroupId)
+        public async Task<PersonGroup> UpdatePersonGroup(PersonGroup personGroup)
+        {
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroup.personGroupId}";
+
+            //setup content
+            var data = new Dictionary<string, string>();
+            data.Add("name", personGroup.name);
+            data.Add("userData", personGroup.userData);
+            var dataJson = JsonConvert.SerializeObject(data);
+            var content = new StringContent(dataJson, Encoding.UTF8, "application/json");
+
+            //make request
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), apiUri) { Content = content };
+            var responseMessage = await httpClient.SendAsync(request);
+
+            //return object if sucess or null if not
+            return (responseMessage.IsSuccessStatusCode) ? personGroup : null;
+        }
+
+        public async Task<PersonGroupTrainingStatus> TrainPersonGroup(string personGroupId)
         {
             return null;
         }
 
-        public string DeletePersonGroup(string personGroupId)
+        public async Task<string> DeletePersonGroup(string personGroupId)
         {
-            return null;
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}";
+
+            //make request
+            var responseMessage = await httpClient.DeleteAsync(apiUri);
+
+            //return reason phrase if sucess or null if not
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return responseMessage.ReasonPhrase;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
