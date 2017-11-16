@@ -135,7 +135,56 @@ namespace PersonGroupSample.Repositories
 
         public async Task<PersonGroupTrainingStatus> TrainPersonGroup(string personGroupId)
         {
-            return null;
+            //start a trainig job
+            var trainingJobResponse = await CreatePersonGroupTrainingJob(personGroupId);
+
+            //return null if job was not started correctly
+            if (!trainingJobResponse.IsSuccessStatusCode) return null;
+
+            //get training job status and return it
+            var personGroupTrainingStatus = await GetPersonGroupTrainingJobStatus(personGroupId);
+
+            //return object
+            return personGroupTrainingStatus;
+        }
+
+        private async Task<HttpResponseMessage> CreatePersonGroupTrainingJob(string personGroupId)
+        {
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}/train";
+
+            //make request
+            var responseMessage = await httpClient.PostAsync(apiUri, null);
+
+            //return null if it was not a sucess otherwise return reason phrase
+            return (responseMessage.IsSuccessStatusCode) ? responseMessage : null;
+        }
+
+        private async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingJobStatus(string personGroupId)
+        {
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}/training";
+
+            //make request
+            var responseMessage = await httpClient.GetAsync(apiUri);
+
+            //return null if it was not a sucess
+            if (!responseMessage.IsSuccessStatusCode) return null;
+
+            //cast to item
+            var responseString = await responseMessage.Content.ReadAsStringAsync();
+            var item = JsonConvert.DeserializeObject<PersonGroupTrainingStatus>(responseString);
+            return item;
         }
 
         public async Task<string> DeletePersonGroup(string personGroupId)
