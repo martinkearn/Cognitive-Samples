@@ -12,7 +12,7 @@ namespace PersonGroupSample.Interfaces
 
         PersonGroup GetPersonGroup(string personGroupId);
 
-        PersonGroup CreatePersonGroup(string name, string userData);
+        Task<PersonGroup> CreatePersonGroup(PersonGroup personGroup);
 
         PersonGroupTrainingStatus TrainPersonGroup(string personGroupId);
 

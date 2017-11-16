@@ -6,27 +6,32 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PersonGroupSample.Interfaces;
+using PersonGroupSample.Repositories;
+using PersonGroupSample.Models;
 
 namespace PersonGroupSample
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; set; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // Add app settings
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
+
+            // Add repositories
+            services.AddSingleton<IPersonGroupRep, PersonGroupRep>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
