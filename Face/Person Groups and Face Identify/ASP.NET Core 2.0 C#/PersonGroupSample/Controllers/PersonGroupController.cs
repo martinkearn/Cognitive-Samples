@@ -31,7 +31,14 @@ namespace PersonGroupSample.Controllers
         // GET: PersonGroup/Details/5
         public async Task<ActionResult> Details(string id)
         {
+            //get person group
             var personGroup = await _personGroupRep.GetPersonGroup(id);
+
+            //get training status
+            var personGroupTrainingStatus = await _personGroupRep.GetPersonGroupTrainingJobStatus(id);
+
+            //get people
+
 
             return View(personGroup);
         }
