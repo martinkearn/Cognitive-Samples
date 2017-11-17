@@ -32,6 +32,7 @@ namespace PersonGroupSample
 
             // Add repositories
             services.AddSingleton<IPersonGroupRep, PersonGroupRep>();
+            services.AddSingleton<IPersonRep, PersonRep>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
