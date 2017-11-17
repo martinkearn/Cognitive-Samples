@@ -7,31 +7,53 @@
 <h2>Details</h2>
 
 <div>
-    <h4>PersonGroup</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.personGroupId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.personGroupId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.userData)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.userData)
-        </dd>
-    </dl>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+        <li role="presentation"><a href="#training" aria-controls="training" role="tab" data-toggle="tab">Training</a></li>
+        <li role="presentation"><a href="#faces" aria-controls="faces" role="tab" data-toggle="tab">Faces</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="details">
+            <h4>Details</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.personGroupId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.personGroupId)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.userData)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.userData)
+                </dd>
+            </dl>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="training">
+            <h4>Training</h4>
+            <hr />
+        </div>
+        <div role="tabpanel" class="tab-pane" id="faces">
+            <h4>Faces</h4>
+            <hr />
+        </div>
+    </div>
+
 </div>
+
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.personGroupId }) |
-    @Html.ActionLink("Train", "Train", new { id = Model.personGroupId }) |
     <a asp-action="Index">Back to List</a>
 </div>
