@@ -38,7 +38,7 @@ namespace PersonGroupSample.Controllers
             var personGroupTrainingStatus = await _personGroupRep.GetPersonGroupTrainingJobStatus(id);
 
             //get people
-
+            //var peopleInGroup = await _personGro
 
             return View(personGroup);
         }
