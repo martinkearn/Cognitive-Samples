@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PersonGroupSample.Interfaces
@@ -16,7 +17,9 @@ namespace PersonGroupSample.Interfaces
 
         Task<PersonGroup> UpdatePersonGroup(PersonGroup personGroup);
 
-        Task<PersonGroupTrainingStatus> TrainPersonGroup(string personGroupId);
+        Task<HttpResponseMessage> CreatePersonGroupTrainingJob(string personGroupId);
+
+        Task<PersonGroupTrainingStatus> GetPersonGroupTrainingJobStatus(string personGroupId);
 
         Task<string> DeletePersonGroup(string personGroupId);
     }

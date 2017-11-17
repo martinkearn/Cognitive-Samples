@@ -133,22 +133,7 @@ namespace PersonGroupSample.Repositories
             return (responseMessage.IsSuccessStatusCode) ? personGroup : null;
         }
 
-        public async Task<PersonGroupTrainingStatus> TrainPersonGroup(string personGroupId)
-        {
-            //start a trainig job
-            var trainingJobResponse = await CreatePersonGroupTrainingJob(personGroupId);
-
-            //return null if job was not started correctly
-            if (!trainingJobResponse.IsSuccessStatusCode) return null;
-
-            //get training job status and return it
-            var personGroupTrainingStatus = await GetPersonGroupTrainingJobStatus(personGroupId);
-
-            //return object
-            return personGroupTrainingStatus;
-        }
-
-        private async Task<HttpResponseMessage> CreatePersonGroupTrainingJob(string personGroupId)
+        public async Task<HttpResponseMessage> CreatePersonGroupTrainingJob(string personGroupId)
         {
             //setup HttpClient
             var httpClient = new HttpClient();
@@ -165,7 +150,7 @@ namespace PersonGroupSample.Repositories
             return (responseMessage.IsSuccessStatusCode) ? responseMessage : null;
         }
 
-        private async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingJobStatus(string personGroupId)
+        public async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingJobStatus(string personGroupId)
         {
             //setup HttpClient
             var httpClient = new HttpClient();

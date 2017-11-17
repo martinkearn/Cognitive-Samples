@@ -36,8 +36,32 @@ namespace PersonGroupSample.Controllers
             return View(personGroup);
         }
 
+        // GET: PersonGroup/Train/5
+        public async Task<ActionResult> Train(string id)
+        {
+            var trainingGroupStatus = await _personGroupRep.GetPersonGroupTrainingJobStatus(id); 
+            return View(trainingGroupStatus);
+        }
+
+        // POST: PersonGroup/Train/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Train(string id, IFormCollection collection)
+        {
+            try
+            {
+                var trainingGroupStatus = await _personGroupRep.CreatePersonGroupTrainingJob(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: PersonGroup/Create
-        public async Task<ActionResult> Create()
+        public ActionResult Create()
         {
             return View();
         }
