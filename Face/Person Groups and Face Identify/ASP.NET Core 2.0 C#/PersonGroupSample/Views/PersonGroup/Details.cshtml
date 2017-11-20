@@ -77,7 +77,9 @@
             @foreach (var person in Model.People)
             { 
                 <a asp-controller="Person" asp-action="Details" asp-route-id="@person.personId">@person.name (@person.personId)</a>
+                <br />
             }
+            <br />
             <a asp-controller="Person" asp-action="Create" asp-route-PersonGroupId="@Model.PersonGroup.personGroupId" class="btn btn-default">Create Person</a>
         </div>
     </div>

@@ -57,7 +57,6 @@ namespace PersonGroupSample.Controllers
                 var result = await _personRep.CreatePerson(personGroupId, person);
 
                 return RedirectToAction("Index", "PersonGroup");
-                //return RedirectToAction("Details", new RouteValueDictionary(new { controller = "PersonGroup", action = "Details", personGroupId = personGroupId }));
             }
             catch
             {
