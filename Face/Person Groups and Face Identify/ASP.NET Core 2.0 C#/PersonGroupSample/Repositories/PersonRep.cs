@@ -112,7 +112,22 @@ namespace PersonGroupSample.Repositories
 
         public async Task<string> DeletePerson(string personGroupId, string personId)
         {
-            return null;
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}/persons/{personId}";
+
+            //make request
+            var responseMessage = await httpClient.DeleteAsync(apiUri);
+
+            //return null if it was not a sucess
+            if (!responseMessage.IsSuccessStatusCode) return null;
+
+            //return object
+            return responseMessage.ReasonPhrase;
         }
 
         public async Task<string> UpdatePerson(string personGroupId, Person person)

@@ -74,13 +74,13 @@
         <div role="tabpanel" class="tab-pane" id="people">
             <h4>People</h4>
             <hr />
+            <a asp-controller="Person" asp-action="Create" asp-route-PersonGroupId="@Model.PersonGroup.personGroupId" class="btn btn-default">Create Person</a>
+            <hr />
             @foreach (var person in Model.People)
             { 
                 <a asp-controller="Person" asp-action="Details" asp-route-id="@person.personId" asp-route-persongroupid="@Model.PersonGroup.personGroupId">@person.name (@person.personId)</a>
                 <br />
             }
-            <br />
-            <a asp-controller="Person" asp-action="Create" asp-route-PersonGroupId="@Model.PersonGroup.personGroupId" class="btn btn-default">Create Person</a>
         </div>
     </div>
 

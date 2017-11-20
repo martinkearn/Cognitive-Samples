@@ -40,6 +40,7 @@
 </div>
 
 <div>
+    @Html.ActionLink("Delete", "Delete", new { personGroupId = Model.PersonGroupId , id = Model.Person.persistedFaceIds}) |
     <a asp-action="Index">Back to List</a>
 </div>
 

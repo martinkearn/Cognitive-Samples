@@ -1,11 +1,12 @@
 ﻿@model PersonGroupSample.ViewModels.PersonCreate
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-<h2>Details</h2>
+<h2>Delete</h2>
 
+<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Person</h4>
     <hr />
@@ -35,9 +36,10 @@
             @Html.DisplayFor(model => model.Person.userData)
         </dd>
     </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Person.personId, personGroupId = Model.PersonGroupId }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.Person.personId, personGroupId = Model.PersonGroupId }) |
-    <a asp-action="Index">Back to List</a>
+    
+    <form asp-action="Delete">
+        <input asp-for="PersonGroupId" class="form-control hidden"  value="@Model.PersonGroupId"/>
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
 </div>

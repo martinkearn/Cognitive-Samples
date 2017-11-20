@@ -23,7 +23,7 @@ namespace PersonGroupSample.Controllers
         // GET: Person
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "PersonGroup");
         }
 
         // GET: Person/Details/5
@@ -107,21 +107,31 @@ namespace PersonGroupSample.Controllers
         }
 
         // GET: Person/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id, string personGroupId)
         {
-            return View();
+            var person = await _personRep.GetPerson(personGroupId, id);
+
+            var vm = new PersonCreate()
+            {
+                PersonGroupId = personGroupId,
+                Person = person
+            };
+
+            return View(vm);
         }
 
         // POST: Person/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                var personGroupId = collection["personGroupId"];
 
-                return RedirectToAction(nameof(Index));
+                var result = await _personRep.DeletePerson(personGroupId, id);
+
+                return RedirectToAction("Index", "PersonGroup");
             }
             catch
             {
