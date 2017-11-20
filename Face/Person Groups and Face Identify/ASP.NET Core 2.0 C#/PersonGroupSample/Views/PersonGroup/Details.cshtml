@@ -1,4 +1,4 @@
-﻿@model PersonGroupSample.Models.PersonGroup
+﻿@model PersonGroupSample.ViewModels.PersonGroupDetails
 
 @{
     ViewData["Title"] = "Details";
@@ -12,7 +12,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
         <li role="presentation"><a href="#training" aria-controls="training" role="tab" data-toggle="tab">Training</a></li>
-        <li role="presentation"><a href="#faces" aria-controls="faces" role="tab" data-toggle="tab">Faces</a></li>
+        <li role="presentation"><a href="#people" aria-controls="people" role="tab" data-toggle="tab">People</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -22,38 +22,69 @@
             <hr />
             <dl class="dl-horizontal">
                 <dt>
-                    @Html.DisplayNameFor(model => model.personGroupId)
+                    @Html.DisplayNameFor(model => model.PersonGroup.personGroupId)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.personGroupId)
+                    @Html.DisplayFor(model => model.PersonGroup.personGroupId)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.name)
+                    @Html.DisplayNameFor(model => model.PersonGroup.name)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.name)
+                    @Html.DisplayFor(model => model.PersonGroup.name)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.userData)
+                    @Html.DisplayNameFor(model => model.PersonGroup.userData)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.userData)
+                    @Html.DisplayFor(model => model.PersonGroup.userData)
                 </dd>
             </dl>
         </div>
         <div role="tabpanel" class="tab-pane" id="training">
             <h4>Training</h4>
             <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    createdDateTime
+                </dt>
+                <dd>
+                    @Model.TrainingStatus.createdDateTime
+                </dd>
+                <dt>
+                    lastActionDateTime
+                </dt>
+                <dd>
+                    @Model.TrainingStatus.lastActionDateTime
+                </dd>
+                <dt>
+                    message
+                </dt>
+                <dd>
+                    @Model.TrainingStatus.message
+                </dd>
+                <dt>
+                    status
+                </dt>
+                <dd>
+                    @Model.TrainingStatus.status
+                </dd>
+            </dl>
         </div>
-        <div role="tabpanel" class="tab-pane" id="faces">
-            <h4>Faces</h4>
+        <div role="tabpanel" class="tab-pane" id="people">
+            <h4>People</h4>
             <hr />
+            @foreach (var person in Model.People)
+            { 
+                <a asp-controller="Person" asp-action="Details" asp-route-id="@person.personId">@person.name (@person.personId)</a>
+            }
+            <a asp-controller="Person" asp-action="Create" asp-route-PersonGroupId="@Model.PersonGroup.personGroupId" class="btn btn-default">Create Person</a>
         </div>
     </div>
 
 </div>
 
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.personGroupId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonGroup.personGroupId }) |
     <a asp-action="Index">Back to List</a>
 </div>

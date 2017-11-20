@@ -4,11 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PersonGroupSample.ViewModels;
+using PersonGroupSample.Models;
+using PersonGroupSample.Interfaces;
+using Microsoft.AspNetCore.Routing;
 
 namespace PersonGroupSample.Controllers
 {
     public class PersonController : Controller
     {
+        private readonly IPersonRep _personRep;
+
+        public PersonController(IPersonRep personRep)
+        {
+            _personRep = personRep;
+        }
+
         // GET: Person
         public ActionResult Index()
         {
@@ -22,21 +33,31 @@ namespace PersonGroupSample.Controllers
         }
 
         // GET: Person/Create
-        public ActionResult Create()
+        public ActionResult Create(string personGroupId)
         {
-            return View();
+            var vm = new PersonCreate()
+            {
+                PersonGroupId = personGroupId,
+                Person = new Person()
+            };
+
+            return View(vm);
         }
 
         // POST: Person/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(IFormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                var person = CastFormCollection(collection);
+                var personGroupId = collection["personGroupId"];
 
-                return RedirectToAction(nameof(Index));
+                var result = await _personRep.CreatePerson(personGroupId, person);
+
+                return RedirectToAction("Index", "PersonGroup");
+                //return RedirectToAction("Details", new RouteValueDictionary(new { controller = "PersonGroup", action = "Details", personGroupId = personGroupId }));
             }
             catch
             {
@@ -88,6 +109,16 @@ namespace PersonGroupSample.Controllers
             {
                 return View();
             }
+        }
+
+        private Person CastFormCollection(IFormCollection collection)
+        {
+            return new Person()
+            {
+                personId = collection["Person.personId"],
+                name = collection["Person.name"],
+                userData = collection["Person.userData"]
+            };
         }
     }
 }

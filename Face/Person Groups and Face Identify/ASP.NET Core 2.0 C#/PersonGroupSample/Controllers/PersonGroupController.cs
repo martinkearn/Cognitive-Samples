@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PersonGroupSample.Interfaces;
 using PersonGroupSample.Models;
+using PersonGroupSample.ViewModels;
 
 namespace PersonGroupSample.Controllers
 {
@@ -13,10 +14,12 @@ namespace PersonGroupSample.Controllers
     {
 
         private readonly IPersonGroupRep _personGroupRep;
+        private readonly IPersonRep _personRep;
 
-        public PersonGroupController(IPersonGroupRep personGroupRep)
+        public PersonGroupController(IPersonGroupRep personGroupRep, IPersonRep personRep)
         {
             _personGroupRep = personGroupRep;
+            _personRep = personRep;
         }
 
 
@@ -38,9 +41,16 @@ namespace PersonGroupSample.Controllers
             var personGroupTrainingStatus = await _personGroupRep.GetPersonGroupTrainingJobStatus(id);
 
             //get people
-            //var peopleInGroup = await _personGro
+            var peopleInGroup = await _personRep.ListPersonsInGroup(id);
 
-            return View(personGroup);
+            var vm = new PersonGroupDetails()
+            {
+                PersonGroup = personGroup,
+                TrainingStatus = personGroupTrainingStatus,
+                People = peopleInGroup.ToList()
+            };
+
+            return View(vm);
         }
 
         // GET: PersonGroup/Train/5
