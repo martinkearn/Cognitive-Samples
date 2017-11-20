@@ -17,5 +17,7 @@ namespace PersonGroupSample.Interfaces
         Task<IEnumerable<Person>> ListPersonsInGroup(string personGroupId);
 
         Task<string> DeletePerson(string personGroupId, string personId);
+
+        Task<string> UpdatePerson(string personGroupId, Person person);
     }
 }

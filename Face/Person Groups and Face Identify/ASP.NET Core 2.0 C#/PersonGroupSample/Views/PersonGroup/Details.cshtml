@@ -76,7 +76,7 @@
             <hr />
             @foreach (var person in Model.People)
             { 
-                <a asp-controller="Person" asp-action="Details" asp-route-id="@person.personId">@person.name (@person.personId)</a>
+                <a asp-controller="Person" asp-action="Details" asp-route-id="@person.personId" asp-route-persongroupid="@Model.PersonGroup.personGroupId">@person.name (@person.personId)</a>
                 <br />
             }
             <br />

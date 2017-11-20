@@ -27,9 +27,17 @@ namespace PersonGroupSample.Controllers
         }
 
         // GET: Person/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id, string personGroupId)
         {
-            return View();
+            var person = await _personRep.GetPerson(personGroupId, id);
+
+            var vm = new PersonCreate()
+            {
+                PersonGroupId = personGroupId,
+                Person = person
+            };
+
+            return View(vm);
         }
 
         // GET: Person/Create
@@ -65,21 +73,32 @@ namespace PersonGroupSample.Controllers
         }
 
         // GET: Person/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id, string personGroupId)
         {
-            return View();
+            var person = await _personRep.GetPerson(personGroupId, id);
+
+            var vm = new PersonCreate()
+            {
+                PersonGroupId = personGroupId,
+                Person = person
+            };
+
+            return View(vm);
         }
 
         // POST: Person/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(string id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                var person = CastFormCollection(collection);
+                var personGroupId = collection["personGroupId"];
 
-                return RedirectToAction(nameof(Index));
+                var result = await _personRep.UpdatePerson(personGroupId, person);
+
+                return RedirectToAction("Index", "PersonGroup");
             }
             catch
             {

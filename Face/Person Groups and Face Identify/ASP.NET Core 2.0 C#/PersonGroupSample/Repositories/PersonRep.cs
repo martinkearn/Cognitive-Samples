@@ -56,7 +56,24 @@ namespace PersonGroupSample.Repositories
 
         public async Task<Person> GetPerson(string personGroupId, string personId)
         {
-            return null;
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}/persons/{personId}";
+
+            //make request
+            var responseMessage = await httpClient.GetAsync(apiUri);
+
+            //return null if it was not a sucess
+            if (!responseMessage.IsSuccessStatusCode) return null;
+
+            //return object
+            var responseString = await responseMessage.Content.ReadAsStringAsync();
+            var item = JsonConvert.DeserializeObject<Person>(responseString.ToString());
+            return item;
         }
 
         public async Task<IEnumerable<Person>> ListPersonsInGroup(string personGroupId)
@@ -96,6 +113,34 @@ namespace PersonGroupSample.Repositories
         public async Task<string> DeletePerson(string personGroupId, string personId)
         {
             return null;
+        }
+
+        public async Task<string> UpdatePerson(string personGroupId, Person person)
+        {
+            //setup HttpClient
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_appSettings.FaceApiEndpoint);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appSettings.FaceApiKey);
+
+            //construct full endpoint uri
+            var apiUri = $"{_appSettings.FaceApiEndpoint}/persongroups/{personGroupId}/persons/{person.personId}";
+
+            //setup content
+            var data = new Dictionary<string, string>();
+            data.Add("name", person.name);
+            data.Add("userData", person.userData);
+            var dataJson = JsonConvert.SerializeObject(data);
+            var content = new StringContent(dataJson, Encoding.UTF8, "application/json");
+
+            //make request
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), apiUri) { Content = content };
+            var responseMessage = await httpClient.SendAsync(request);
+
+            //return null if it was not a sucess
+            if (!responseMessage.IsSuccessStatusCode) return null;
+
+            //return object
+            return person.personId;
         }
     }
 }
