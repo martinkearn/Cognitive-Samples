@@ -1,0 +1,33 @@
+﻿@model CustomVision.Models.PredictionResult
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Makaton > English translator</h1>
+        <p>Upload a photo of someone doing one of these Makaton signs: Sleep, Daddy, OK, Naughty, Rabbit</p>
+        <form asp-action="Index" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="file" id="file" class="form-control input" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Upload" class="btn btn-default" />
+            </div>
+        </form>
+        @if (Model != null)
+        {
+            <p>This image looks like it contains the following signs</p>
+            @foreach (var prediction in Model.Predictions)
+            {
+                @if (Math.Round(prediction.Probability, 2) > 0)
+                {
+                    <p><strong>@prediction.Tag</strong> @Math.Round(prediction.Probability, 2)%</p>
+                }
+            }
+        }
+        <hr />
+        <p><small>Get the code for this sample at: https://github.com/martinkearn/Cognitive-Samples</small></p>
+    </div>
+</div>
