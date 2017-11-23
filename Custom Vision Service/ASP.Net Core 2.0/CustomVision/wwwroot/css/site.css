@@ -72,3 +72,10 @@ h1 {
 .panel-heading {
     font-family: 'castledownbold', Arial Rounded MT, Arial, sans-serif;
 }
+
+.btn {
+    background-color: #F79433;
+    border-color: #F79433;
+    color: white;
+    font-family: 'castledownbold', Arial Rounded MT, Arial, sans-serif;
+}

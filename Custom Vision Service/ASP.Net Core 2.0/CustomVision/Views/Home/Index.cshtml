@@ -26,7 +26,7 @@
 {
     <hr />
     <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Your Photo</h3>
@@ -38,7 +38,7 @@
             </div>
         @foreach (var prediction in Model.PredictionResult.Predictions.Where(x => x.Probability > 0.1))
         {
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">@prediction.Tag (@(Math.Round(prediction.Probability, 2) * 100)% likely)</h3>
