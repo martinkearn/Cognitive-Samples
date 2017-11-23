@@ -1,4 +1,4 @@
-﻿@model CustomVision.Models.PredictionResult
+﻿@model CustomVision.ViewModel.IndexViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,10 +7,14 @@
 <div class="row">
     <div class="col-md-12">
         <h1>Makaton > English translator</h1>
-        <p>Upload a photo of someone doing one of these Makaton signs: Sleep, Daddy, OK, Naughty, Rabbit</p>
+        <p class="lead">Upload a photo of someone doing a Makaton sign and we'll tell you which sign it is.</p>
+        <p>This experiment is based on a <a href="https://azure.microsoft.com/en-us/services/cognitive-services/custom-vision-service/">Cognitive Services Custom Vision Service</a> project which has been trained with very limited training data. This demonstrator only shows the concept of what is possible and is not a true reflection of potential accuracy if the model is trained more comprehensively. This is an open source sample, on <a href="https://github.com/martinkearn/Cognitive-Samples">GitHub</a>.</p>
+        <hr />
         <form asp-action="Index" enctype="multipart/form-data">
             <div class="form-group">
-                <input type="file" name="file" id="file" class="form-control input" required>
+                <label for="exampleInputFile">File</label>
+                <input type="file" name="file" id="file">
+                <p class="help-block">Select a photo of a person doing a Makaton sign (Sleep, Daddy, OK, Naughty, Rabbit).</p>
             </div>
             <div class="form-group">
                 <input type="submit" value="Upload" class="btn btn-default" />
@@ -18,16 +22,28 @@
         </form>
         @if (Model != null)
         {
-            <p>This image looks like it contains the following signs</p>
-            @foreach (var prediction in Model.Predictions)
-            {
-                @if (Math.Round(prediction.Probability, 2) > 0)
+            <hr />
+            <img src="@Model.Image" class="img-thumbnail" style="max-width:250px" alt="A photo of someone performing the @Model.PredictionResult.Predictions.FirstOrDefault().Tag Makaton sign" />
+            <div class="row">
+                <div class="col-md-12">
+                    <p>This image looks like it contains the following signs</p>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var prediction in Model.PredictionResult.Predictions.Where(x => x.Probability > 0.1))
                 {
-                    <p><strong>@prediction.Tag</strong> @Math.Round(prediction.Probability, 2)%</p>
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@prediction.Tag (@(Math.Round(prediction.Probability, 2) * 100)% likely)</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="~/images/Makaton/@(prediction.Tag).tif" alt="@prediction.Tag" class="img-responsive" />
+                            </div>
+                        </div>
+                    </div>                   
                 }
-            }
+            </div>
         }
-        <hr />
-        <p><small>Get the code for this sample at: https://github.com/martinkearn/Cognitive-Samples</small></p>
     </div>
 </div>

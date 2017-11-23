@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using CustomVision.ViewModel;
 
 namespace CustomVision.Controllers
 {
@@ -61,7 +62,18 @@ namespace CustomVision.Controllers
             //deserialise json to object
             var predictionResult = JsonConvert.DeserializeObject<PredictionResult>(responseString);
 
-            return View(predictionResult);
+            //prepare image as base64 bytes string
+            var imageBase64 = Convert.ToBase64String(fileBytes);
+            var imageString = $"data:image/png;base64,{imageBase64}";
+
+            //create view model
+            var vm = new IndexViewModel()
+            {
+                PredictionResult = predictionResult,
+                Image = imageString
+            };
+
+            return View(vm);
 
         }
 
