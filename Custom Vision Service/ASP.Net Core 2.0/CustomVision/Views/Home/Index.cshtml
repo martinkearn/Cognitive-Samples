@@ -4,51 +4,76 @@
     ViewData["Title"] = "Makaton to English Translator";
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Index" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="exampleInputFile">File</label>
-                <input type="file" name="file" id="file">
-                <p class="help-block">Select a photo of a person doing a Makaton sign (Sleep, Daddy, OK, Naughty, Rabbit).</p>
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#mtoe" aria-controls="mtoe" role="tab" data-toggle="tab">Makaton > English</a></li>
+        <li role="presentation"><a href="#etom" aria-controls="etom" role="tab" data-toggle="tab">English > Makaton</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="mtoe">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Index" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="exampleInputFile">File</label>
+                            <input type="file" name="file" id="file">
+                            <p class="help-block">Select a photo of a person doing a Makaton sign (Sleep, Daddy, OK, Naughty, Rabbit).</p>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Upload" class="btn btn-default" />
+                        </div>
+                    </form>
+                    @if (ViewData["message"] != null)
+                    {
+                        <p class="warning">@ViewData["message"]</p>
+                    }
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Upload" class="btn btn-default" />
-            </div>
-        </form>
-        @if (ViewData["message"] != null)
-        {
-        <p class="warning">@ViewData["message"]</p>
-        }
+            @if (Model != null)
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Your Photo</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="@Model.Image" class="img-responsive" alt="A photo of someone performing the @Model.PredictionResult.Predictions.FirstOrDefault().Tag Makaton sign" />
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var prediction in Model.PredictionResult.Predictions.Where(x => x.Probability > 0.1))
+                    {
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">@prediction.Tag (@(Math.Round(prediction.Probability, 2) * 100)% likely)</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/images/Makaton/@(prediction.Tag).tif" height="300" alt="@prediction.Tag" class="img-responsive" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            <hr />
+            <footer>
+                <p><small>This experiment is based on a <a href="https://azure.microsoft.com/en-us/services/cognitive-services/custom-vision-service/">Cognitive Services Custom Vision Service</a> project which has been trained with very limited training data. This demonstrator only shows the concept of what is possible and is not a true reflection of potential accuracy if the model is trained more comprehensively. This is an open source sample on <a href="https://github.com/martinkearn/Cognitive-Samples">GitHub</a>.</small></p>
+            </footer>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="etom">
+            <iframe src='https://webchat.botframework.com/embed/Maka?s=rrOWsgnnKuw.cwA.0a4.B3rMijIyop9kgAPOJLmIY4883ZRAnH-viuJV-cUShF4'></iframe>
+        </div>
     </div>
+
 </div>
-@if (Model != null)
-{
-    <hr />
-    <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Your Photo</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img src="@Model.Image" class="img-responsive" alt="A photo of someone performing the @Model.PredictionResult.Predictions.FirstOrDefault().Tag Makaton sign" />
-                    </div>
-                </div>
-            </div>
-        @foreach (var prediction in Model.PredictionResult.Predictions.Where(x => x.Probability > 0.1))
-        {
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@prediction.Tag (@(Math.Round(prediction.Probability, 2) * 100)% likely)</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img src="~/images/Makaton/@(prediction.Tag).tif" height="300"  alt="@prediction.Tag" class="img-responsive" />
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
+
+
 

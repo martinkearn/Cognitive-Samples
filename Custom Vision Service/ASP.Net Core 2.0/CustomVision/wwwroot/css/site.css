@@ -79,3 +79,13 @@ h1 {
     color: white;
     font-family: 'castledownbold', Arial Rounded MT, Arial, sans-serif;
 }
+
+iframe {
+    background: #fff;
+    height: 600px;
+    width: 360px;
+    /*position: fixed;
+    bottom: 0;
+    right: 2%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5)*/
+}
