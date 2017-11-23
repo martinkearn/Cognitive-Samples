@@ -28,7 +28,6 @@ namespace CustomVision.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(IFormCollection collection)
         {
-
             var projectId = "b9d89c0c-618e-4698-b0f0-db85d7ddb888";
             var predictionKey = "f23b13aeac6943939afeef1d4517b7ba";
 
@@ -57,9 +56,15 @@ namespace CustomVision.Controllers
             var content = new ByteArrayContent(fileBytes);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             var responseMessage = await client.PostAsync(uri, content);
-            var responseString = await responseMessage.Content.ReadAsStringAsync();
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                ViewData["message"] = responseMessage.ReasonPhrase;
+                return View(null);
+            }
 
             //deserialise json to object
+            var responseString = await responseMessage.Content.ReadAsStringAsync();
             var predictionResult = JsonConvert.DeserializeObject<PredictionResult>(responseString);
 
             //prepare image as base64 bytes string

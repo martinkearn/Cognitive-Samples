@@ -1,7 +1,28 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@font-face {
+    font-family: 'castledownbold';
+    src: url('castledown_bold-webfont.woff2') format('woff2'), url('castledown_bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'castledownregular';
+    src: url('castledown-regular-webfont.woff2') format('woff2'), url('castledown-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    padding-top: 84px;
+    padding-bottom: 20px;
+    font-family: 'castledownregular', Arial Rounded MT, Arial, sans-serif;
+}
+
+h1 {
+    color: rgb(255, 220, 25);
+    font-family: 'castledownbold', Arial Rounded MT, Arial, sans-serif;
+}
+
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
@@ -32,4 +53,22 @@
     .carousel-caption {
         display: none;
     }
+}
+
+.navbar {
+    background-color: #8A73B4;
+    height: 84px;
+}
+
+.navbar-inverse {
+    border-color: #765da3;
+}
+
+.jumbotron {
+    background-color: #00b9dc;
+    color: rgb(255, 220, 25);
+}
+
+.panel-heading {
+    font-family: 'castledownbold', Arial Rounded MT, Arial, sans-serif;
 }

@@ -17,8 +17,37 @@
     </environment>
 </head>
 <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/images/makaton_logo.svg" alt="Makaton logo" /></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Makaton to English Translator</h1>
+            <p class="lead">Upload a photo of someone doing a Makaton sign and we'll tell you which sign it is.</p>
+            </div>
+    </div>
+
     <div class="container body-content">
         @RenderBody()
+        <hr />
+        <footer>
+            <p><small>This experiment is based on a <a href="https://azure.microsoft.com/en-us/services/cognitive-services/custom-vision-service/">Cognitive Services Custom Vision Service</a> project which has been trained with very limited training data. This demonstrator only shows the concept of what is possible and is not a true reflection of potential accuracy if the model is trained more comprehensively. This is an open source sample on <a href="https://github.com/martinkearn/Cognitive-Samples">GitHub</a>.</small></p>
+        </footer>
     </div>
 
     <environment include="Development">
